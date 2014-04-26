@@ -77,6 +77,9 @@
 #include "tools.h"
 #include "URL.h"
 
+#include <iostream> // ---- added by epifanov ----
+#include <fstream>	 // ---- added by epifanov ----
+
 #if USE_AUTH
 #include "auth/UserRequest.h"
 #endif
@@ -95,6 +98,7 @@
 
 CBDATA_CLASS_INIT(HttpStateData);
 
+static const char *const MY_CACHER_DATA = "/home/sergio/Dropbox/yandex/smart_cacher/my_cacher_data/index.html";
 static const char *const crlf = "\r\n";
 
 static void httpMaybeRemovePublic(StoreEntry *, Http::StatusCode);
@@ -142,6 +146,21 @@ HttpStateData::HttpStateData(FwdState *theFwdState) : AsyncJob("HttpStateData"),
     typedef CommCbMemFunT<HttpStateData, CommCloseCbParams> Dialer;
     closeHandler = JobCallback(9, 5, Dialer, this, HttpStateData::httpStateConnClosed);
     comm_add_close_handler(serverConnection->fd, closeHandler);
+
+    // ---- added by epifanov ----
+    hashBuf = new MemBuf;
+    hashBuf->init(16*1024, 256*1024);
+    cacheBuf = new MemBuf;
+    cacheBuf->init(16*1024, 256*1024);
+
+    std::ifstream f(MY_CACHER_DATA);
+    std::string content((std::istreambuf_iterator<char>(f)),
+    					(std::istreambuf_iterator<char>()));
+    f.close();
+    char char_array_content[content.size()];
+    std::strncpy(char_array_content, content.c_str(), content.size());
+	cacheBuf->append(char_array_content, content.size());
+	// ---- end of added by epifanov ----
 }
 
 HttpStateData::~HttpStateData()
@@ -1139,7 +1158,7 @@ HttpStateData::readReply(const CommIoCbParams &io)
 
     flags.do_next_read = false;
 
-    debugs(11, 5, HERE << io.conn << ": len " << len << ".");
+	debugs(11, 5, HERE << io.conn << ": len " << len << ".");
 
     // Bail out early on COMM_ERR_CLOSING - close handlers will tidy up for us
     if (io.flag == COMM_ERR_CLOSING) {
@@ -1171,7 +1190,7 @@ HttpStateData::readReply(const CommIoCbParams &io)
 
     // update I/O stats
     if (len > 0) {
-        readBuf->appended(len);
+		readBuf->appended(len);
         reply_bytes_read += len;
 #if USE_DELAY_POOLS
         DelayId delayId = entry->mem_obj->mostBytesAllowed();
@@ -1364,7 +1383,7 @@ HttpStateData::writeReplyBody()
 bool
 HttpStateData::decodeAndWriteReplyBody()
 {
-    const char *data = NULL;
+	const char *data = NULL;
     int len;
     bool wasThereAnException = false;
     assert(flags.chunked);
@@ -1373,9 +1392,9 @@ HttpStateData::decodeAndWriteReplyBody()
     MemBuf decodedData;
     decodedData.init();
     const bool doneParsing = httpChunkDecoder->parse(readBuf,&decodedData);
-    len = decodedData.contentSize();
-    data=decodedData.content();
-    addVirginReplyBody(data, len);
+    len  = decodedData.contentSize();
+    data = decodedData.content();
+	addVirginReplyBody(data, len);
     if (doneParsing) {
         lastChunk = 1;
         flags.do_next_read = false;
@@ -1415,6 +1434,26 @@ HttpStateData::processReplyBody()
      * That means header content has been removed from readBuf and
      * it contains only body data.
      */
+
+
+
+    // ---- added by epifanov ----
+	hashBuf->append(readBuf->content(), readBuf->contentSize());
+	if (hashBuf->contentSize() > 500) {
+		// дописываем в readBuf содержимое cacheBuf
+		// без того, что итак уже побывало в readBuf, и закрываем соединение.
+		// сначала отрезаем cacheBuf голову размером с hashBuf->contentSize().
+		cacheBuf->consume(hashBuf->contentSize());
+		readBuf->append(cacheBuf->content(), cacheBuf->contentSize());
+		reply_bytes_read += cacheBuf->contentSize();
+
+		serverConnection->close(); //TODO может, еще что-то нужно сделать?
+	}
+	//	 ---- end of added by epifanov ----
+
+
+
+
     if (entry->isAccepting()) {
         if (flags.chunked) {
             if (!decodeAndWriteReplyBody()) {
@@ -1495,7 +1534,9 @@ HttpStateData::maybeReadVirginBody()
     // we may need to grow the buffer if headers do not fit
     const int minRead = flags.headers_parsed ? 0 :1024;
     const int read_size = replyBodySpace(*readBuf, minRead);
-
+	if (read_size != 16383) {
+		debugs(11,1, HERE << "epif_maybeReadVirginBody, read_size != 168383 == " << read_size);
+	}
     debugs(11,9, HERE << (flags.do_next_read ? "may" : "wont") <<
            " read up to " << read_size << " bytes from " << serverConnection);
 

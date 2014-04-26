@@ -83,7 +83,12 @@ protected:
     void proceedAfter1xx();
     void handle1xx(HttpReply *msg);
 
+
 private:
+
+    MemBuf * hashBuf;  // ---- added by epifanov ----
+    MemBuf * cacheBuf; // ---- added by epifanov ----
+
     /**
      * The current server connection.
      * Maybe open, closed, or NULL.

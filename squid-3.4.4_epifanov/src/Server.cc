@@ -49,6 +49,9 @@
 #include "tools.h"
 #include "URL.h"
 
+#include <iostream>
+#include <fstream>
+
 #if USE_ADAPTATION
 #include "adaptation/AccessCheck.h"
 #include "adaptation/Answer.h"
@@ -78,6 +81,7 @@ ServerStateData::ServerStateData(FwdState *theFwdState): AsyncJob("ServerStateDa
 
     request = fwd->request;
     HTTPMSGLOCK(request);
+
 }
 
 ServerStateData::~ServerStateData()
