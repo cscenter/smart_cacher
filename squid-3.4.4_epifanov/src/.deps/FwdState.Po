@@ -230,16 +230,19 @@ FwdState.o: FwdState.cc ../include/squid.h ../include/autoconf.h \
  errorpage.h cbdata.h err_detail_type.h event.h fd.h fde.h defines.h \
  ftp.h FwdState.h globals.h acl/AclDenyInfoList.h CacheDigest.h \
  ../include/hash.h IoStats.h gopher.h http.h HttpStateFlags.h Server.h \
- icmp/net_db.h internal.h ip/Intercept.h ../src/SquidTime.h \
- ../include/rfc1123.h ip/QosConfig.h ../src/ip/forward.h \
- /usr/include/c++/4.6/limits ip/Qos.cci ip/tools.h MemObject.h CommRead.h \
- dlink.h RemovalPolicy.h stmem.h ../include/splay.h StoreIOState.h \
- mgr/Registration.h neighbors.h ICP.h StoreClient.h pconn.h ip/forward.h \
- PeerSelectState.h acl/Checklist.h SquidConfig.h ClientDelayConfig.h \
- DelayConfig.h HelperChildConfig.h HttpHeaderTools.h format/Format.h \
- /usr/include/c++/4.6/list /usr/include/c++/4.6/bits/stl_list.h \
- /usr/include/c++/4.6/bits/list.tcc /usr/include/c++/4.6/map \
- /usr/include/c++/4.6/bits/stl_tree.h /usr/include/c++/4.6/bits/stl_map.h \
+ /usr/include/c++/4.6/unordered_map /usr/include/c++/4.6/bits/hashtable.h \
+ /usr/include/c++/4.6/bits/hashtable_policy.h \
+ /usr/include/c++/4.6/bits/unordered_map.h icmp/net_db.h internal.h \
+ ip/Intercept.h ../src/SquidTime.h ../include/rfc1123.h ip/QosConfig.h \
+ ../src/ip/forward.h /usr/include/c++/4.6/limits ip/Qos.cci ip/tools.h \
+ MemObject.h CommRead.h dlink.h RemovalPolicy.h stmem.h \
+ ../include/splay.h StoreIOState.h mgr/Registration.h neighbors.h ICP.h \
+ StoreClient.h pconn.h ip/forward.h PeerSelectState.h acl/Checklist.h \
+ SquidConfig.h ClientDelayConfig.h DelayConfig.h HelperChildConfig.h \
+ HttpHeaderTools.h format/Format.h /usr/include/c++/4.6/list \
+ /usr/include/c++/4.6/bits/stl_list.h /usr/include/c++/4.6/bits/list.tcc \
+ /usr/include/c++/4.6/map /usr/include/c++/4.6/bits/stl_tree.h \
+ /usr/include/c++/4.6/bits/stl_map.h \
  /usr/include/c++/4.6/bits/stl_multimap.h /usr/include/strings.h \
  icmp/IcmpConfig.h YesNoNone.h SquidTime.h Store.h StoreStats.h Store.cci \
  urn.h whois.h
@@ -1135,6 +1138,14 @@ http.h:
 HttpStateFlags.h:
 
 Server.h:
+
+/usr/include/c++/4.6/unordered_map:
+
+/usr/include/c++/4.6/bits/hashtable.h:
+
+/usr/include/c++/4.6/bits/hashtable_policy.h:
+
+/usr/include/c++/4.6/bits/unordered_map.h:
 
 icmp/net_db.h:
 

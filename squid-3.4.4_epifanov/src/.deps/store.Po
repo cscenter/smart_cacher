@@ -204,9 +204,12 @@ store.o: store.cc ../include/squid.h ../include/autoconf.h \
  ip/Address.h globals.h acl/AclDenyInfoList.h ../src/err_type.h \
  ../include/hash.h IoStats.h ../include/rfc2181.h http.h HttpStateFlags.h \
  Server.h BodyPipe.h base/AsyncJob.h FwdState.h base/RefCount.h \
- err_type.h http/StatusCode.h HttpReply.h HttpBody.h HttpMsg.h \
- HttpHeader.h HttpHeaderMask.h SquidString.h HttpRequestMethod.h \
- http/ProtocolVersion.h ../src/anyp/ProtocolVersion.h \
+ err_type.h http/StatusCode.h /usr/include/c++/4.6/unordered_map \
+ /usr/include/c++/4.6/bits/hashtable.h \
+ /usr/include/c++/4.6/bits/hashtable_policy.h \
+ /usr/include/c++/4.6/bits/unordered_map.h HttpReply.h HttpBody.h \
+ HttpMsg.h HttpHeader.h HttpHeaderMask.h SquidString.h \
+ HttpRequestMethod.h http/ProtocolVersion.h ../src/anyp/ProtocolVersion.h \
  ../src/anyp/ProtocolType.h HttpRequest.h Debug.h HierarchyLogEntry.h \
  hier_code.h lookup_t.h PingData.h Notes.h acl/forward.h \
  ../include/CbDataList.h ../include/../src/cbdata.h RequestFlags.h \
@@ -969,6 +972,14 @@ base/RefCount.h:
 err_type.h:
 
 http/StatusCode.h:
+
+/usr/include/c++/4.6/unordered_map:
+
+/usr/include/c++/4.6/bits/hashtable.h:
+
+/usr/include/c++/4.6/bits/hashtable_policy.h:
+
+/usr/include/c++/4.6/bits/unordered_map.h:
 
 HttpReply.h:
 

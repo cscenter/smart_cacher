@@ -98,7 +98,6 @@
 
 CBDATA_CLASS_INIT(HttpStateData);
 
-static const char *const MY_CACHER_DATA = "/home/sergio/Dropbox/yandex/smart_cacher/my_cacher_data/index.html";
 static const char *const crlf = "\r\n";
 
 static void httpMaybeRemovePublic(StoreEntry *, Http::StatusCode);
@@ -152,6 +151,11 @@ HttpStateData::HttpStateData(FwdState *theFwdState) : AsyncJob("HttpStateData"),
     hashBuf->init(16*1024, 256*1024);
     cacheBuf = new MemBuf;
     cacheBuf->init(16*1024, 256*1024);
+
+    MY_CACHER_DATA = std::string("/home/sergio/Dropbox/yandex/smart_cacher/my_cacher_data/index.html");
+    CACHE_DIR = std::string("/home/sergio/Dropbox/yandex/smart_cacher/my_cacher_cache/");
+    filename_counter = 0;
+    first_pocket_after_500 = TRUE;
 
     std::ifstream f(MY_CACHER_DATA);
     std::string content((std::istreambuf_iterator<char>(f)),
@@ -1440,14 +1444,67 @@ HttpStateData::processReplyBody()
     // ---- added by epifanov ----
 	hashBuf->append(readBuf->content(), readBuf->contentSize());
 	if (hashBuf->contentSize() > 500) {
-		// дописываем в readBuf содержимое cacheBuf
-		// без того, что итак уже побывало в readBuf, и закрываем соединение.
-		// сначала отрезаем cacheBuf голову размером с hashBuf->contentSize().
-		cacheBuf->consume(hashBuf->contentSize());
-		readBuf->append(cacheBuf->content(), cacheBuf->contentSize());
-		reply_bytes_read += cacheBuf->contentSize();
+		// ---- псевдокод того, что здесь должно быть ----
 
-		serverConnection->close(); //TODO может, еще что-то нужно сделать?
+		// взять первые 500 байт hashBuf
+		// проверить, есть ли такой ключ в хэш-таблице
+
+		// если нету, то
+		// 		как-то (???) подождать самой последней дозаписи в hashBuf
+		//		записать в хэш-таблицу (ключ, имя файла)
+		//		записать в файл содержимое hashBuf
+		// если есть, то
+		// 		достать содержимое файла, имя которого лежит в хэш-таблице по этому ключу
+		// 		отрезать ему голову длиной hashBuf
+		// 		приклеить полученный хвост к readBuf
+		// 		закрыть соединение.
+
+		// Из этого всего мы пока не умеем:
+		// 1. работать с хэш-таблицей
+		// 2. ждать самой последней дозаписи в hashBuf (может, пока тупо каждый раз записывать?)
+
+		// ---- конец псевдокода ----
+		char temp[500];
+		std::strncpy(temp, hashBuf->content(), 500);
+		temp[500 - 1] = 0;
+		std::string key(temp);
+
+		if (cache.find(key) == cache.end()) { // не нашли
+			debugs(11,1, HERE << "epif_cache_miss. Key == " << key.c_str());
+			if (!flags.do_next_read) {
+				cache[key] = std::to_string(++filename_counter);
+
+				// пишем в файл
+				std::ofstream out(CACHE_DIR + cache[key]);
+				out << hashBuf->content();
+				out.close();
+			}
+		} else {
+			debugs(11,1, HERE << "epif_cache_hit. Key == " << key.c_str());
+			std::string filename = (cache.find(key))->second;
+		    std::ifstream in(filename.c_str());
+		    std::string content((std::istreambuf_iterator<char>(in)),
+		    					(std::istreambuf_iterator<char>()));
+		    in.close();
+
+		    cacheBuf->append(content.c_str(), content.size());
+		    cacheBuf->consume(hashBuf->contentSize());
+			readBuf->append(cacheBuf->content(), cacheBuf->contentSize());
+			reply_bytes_read += cacheBuf->contentSize();
+
+			serverConnection->close(); //TODO может, еще что-то нужно сделать?
+		}
+		first_pocket_after_500 = FALSE;
+	}
+
+//		// дописываем в readBuf содержимое cacheBuf
+//		// без того, что итак уже побывало в readBuf, и закрываем соединение.
+//		// сначала отрезаем cacheBuf голову размером с hashBuf->contentSize().
+//		cacheBuf->consume(hashBuf->contentSize());
+//		readBuf->append(cacheBuf->content(), cacheBuf->contentSize());
+//		reply_bytes_read += cacheBuf->contentSize();
+//
+//		serverConnection->close(); //TODO может, еще что-то нужно сделать?
 	}
 	//	 ---- end of added by epifanov ----
 

@@ -21,4 +21,4 @@
 *.app
 
 # Makefile
-Makefile*
+Makefile

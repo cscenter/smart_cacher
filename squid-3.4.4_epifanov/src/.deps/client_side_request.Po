@@ -229,9 +229,14 @@ client_side_request.o: client_side_request.cc ../include/squid.h \
  StoreClient.h comm/Write.h ../compat/inet_pton.h err_detail_type.h \
  errorpage.h fd.h fde.h defines.h format/Token.h ../src/format/ByteCode.h \
  gopher.h helper.h http.h HttpStateFlags.h Server.h FwdState.h \
- HttpHdrCc.h HttpHdrCc.cci ip/QosConfig.h ../src/ip/forward.h \
- /usr/include/c++/4.6/limits ip/Qos.cci log/access_log.h ../src/LogTags.h \
- Parsing.h ../lib/profiler/Profiler.h ../lib/profiler/get_tick.h \
+ /usr/include/c++/4.6/unordered_map /usr/include/c++/4.6/utility \
+ /usr/include/c++/4.6/bits/stl_relops.h \
+ /usr/include/c++/4.6/bits/hashtable.h \
+ /usr/include/c++/4.6/bits/hashtable_policy.h \
+ /usr/include/c++/4.6/bits/unordered_map.h HttpHdrCc.h HttpHdrCc.cci \
+ ip/QosConfig.h ../src/ip/forward.h /usr/include/c++/4.6/limits \
+ ip/Qos.cci log/access_log.h ../src/LogTags.h Parsing.h \
+ ../lib/profiler/Profiler.h ../lib/profiler/get_tick.h \
  ../lib/profiler/xprof_type.h redirect.h SquidConfig.h \
  ClientDelayConfig.h DelayConfig.h HelperChildConfig.h HttpHeaderTools.h \
  format/Format.h typedefs.h /usr/include/c++/4.6/list \
@@ -1134,6 +1139,18 @@ HttpStateFlags.h:
 Server.h:
 
 FwdState.h:
+
+/usr/include/c++/4.6/unordered_map:
+
+/usr/include/c++/4.6/utility:
+
+/usr/include/c++/4.6/bits/stl_relops.h:
+
+/usr/include/c++/4.6/bits/hashtable.h:
+
+/usr/include/c++/4.6/bits/hashtable_policy.h:
+
+/usr/include/c++/4.6/bits/unordered_map.h:
 
 HttpHdrCc.h:
 

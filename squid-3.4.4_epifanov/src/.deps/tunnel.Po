@@ -226,10 +226,15 @@ tunnel.o: tunnel.cc ../include/squid.h ../include/autoconf.h \
  Store.cci MemObject.h stmem.h ../include/splay.h StoreIOState.h \
  client_side_request.cci comm/ConnOpener.h ../src/CommCalls.h \
  comm/Write.h errorpage.h err_detail_type.h fde.h defines.h http.h \
- HttpStateFlags.h Server.h FwdState.h ip/QosConfig.h ../src/ip/forward.h \
- /usr/include/c++/4.6/limits ip/Qos.cci PeerSelectState.h acl/Checklist.h \
- SquidConfig.h ClientDelayConfig.h DelayConfig.h HelperChildConfig.h \
- HttpHeaderTools.h format/Format.h typedefs.h /usr/include/c++/4.6/list \
+ HttpStateFlags.h Server.h FwdState.h /usr/include/c++/4.6/unordered_map \
+ /usr/include/c++/4.6/utility /usr/include/c++/4.6/bits/stl_relops.h \
+ /usr/include/c++/4.6/bits/hashtable.h \
+ /usr/include/c++/4.6/bits/hashtable_policy.h \
+ /usr/include/c++/4.6/bits/unordered_map.h ip/QosConfig.h \
+ ../src/ip/forward.h /usr/include/c++/4.6/limits ip/Qos.cci \
+ PeerSelectState.h acl/Checklist.h SquidConfig.h ClientDelayConfig.h \
+ DelayConfig.h HelperChildConfig.h HttpHeaderTools.h format/Format.h \
+ typedefs.h /usr/include/c++/4.6/list \
  /usr/include/c++/4.6/bits/stl_list.h /usr/include/c++/4.6/bits/list.tcc \
  /usr/include/c++/4.6/map /usr/include/c++/4.6/bits/stl_tree.h \
  /usr/include/c++/4.6/bits/stl_map.h \
@@ -1111,6 +1116,18 @@ HttpStateFlags.h:
 Server.h:
 
 FwdState.h:
+
+/usr/include/c++/4.6/unordered_map:
+
+/usr/include/c++/4.6/utility:
+
+/usr/include/c++/4.6/bits/stl_relops.h:
+
+/usr/include/c++/4.6/bits/hashtable.h:
+
+/usr/include/c++/4.6/bits/hashtable_policy.h:
+
+/usr/include/c++/4.6/bits/unordered_map.h:
 
 ip/QosConfig.h:
 

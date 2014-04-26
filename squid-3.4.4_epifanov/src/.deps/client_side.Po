@@ -231,8 +231,12 @@ client_side.o: client_side.cc ../include/squid.h ../include/autoconf.h \
  ../src/base/Subscription.h comm/Write.h errorpage.h err_detail_type.h \
  fd.h fde.h defines.h fqdncache.h typedefs.h FwdState.h globals.h \
  acl/AclDenyInfoList.h ../src/err_type.h CacheDigest.h IoStats.h http.h \
- HttpStateFlags.h Server.h HttpHdrContRange.h HttpHeaderTools.h \
- format/Format.h /usr/include/c++/4.6/list \
+ HttpStateFlags.h Server.h /usr/include/c++/4.6/unordered_map \
+ /usr/include/c++/4.6/utility /usr/include/c++/4.6/bits/stl_relops.h \
+ /usr/include/c++/4.6/bits/hashtable.h \
+ /usr/include/c++/4.6/bits/hashtable_policy.h \
+ /usr/include/c++/4.6/bits/unordered_map.h HttpHdrContRange.h \
+ HttpHeaderTools.h format/Format.h /usr/include/c++/4.6/list \
  /usr/include/c++/4.6/bits/stl_list.h /usr/include/c++/4.6/bits/list.tcc \
  /usr/include/c++/4.6/map /usr/include/c++/4.6/bits/stl_tree.h \
  /usr/include/c++/4.6/bits/stl_map.h \
@@ -1168,6 +1172,18 @@ http.h:
 HttpStateFlags.h:
 
 Server.h:
+
+/usr/include/c++/4.6/unordered_map:
+
+/usr/include/c++/4.6/utility:
+
+/usr/include/c++/4.6/bits/stl_relops.h:
+
+/usr/include/c++/4.6/bits/hashtable.h:
+
+/usr/include/c++/4.6/bits/hashtable_policy.h:
+
+/usr/include/c++/4.6/bits/unordered_map.h:
 
 HttpHdrContRange.h:
 

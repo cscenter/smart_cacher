@@ -220,13 +220,18 @@ htcp.o: htcp.cc ../include/squid.h ../include/autoconf.h \
  globals.h acl/AclDenyInfoList.h ../src/err_type.h CacheDigest.h \
  defines.h ../include/hash.h IoStats.h htcp.h ip/forward.h http.h \
  HttpStateFlags.h Server.h BodyPipe.h base/AsyncJob.h FwdState.h \
- err_type.h fde.h HttpRequest.h Debug.h HttpMsg.h RequestFlags.h \
- auth/UserRequest.h eui/Eui48.h eui/Eui64.h icmp/net_db.h ip/tools.h \
- ../include/md5.h refresh.h SquidConfig.h ClientDelayConfig.h \
- DelayConfig.h HelperChildConfig.h HttpHeaderTools.h format/Format.h \
- /usr/include/c++/4.6/list /usr/include/c++/4.6/bits/stl_list.h \
- /usr/include/c++/4.6/bits/list.tcc /usr/include/c++/4.6/map \
- /usr/include/c++/4.6/bits/stl_tree.h /usr/include/c++/4.6/bits/stl_map.h \
+ err_type.h fde.h /usr/include/c++/4.6/unordered_map \
+ /usr/include/c++/4.6/utility /usr/include/c++/4.6/bits/stl_relops.h \
+ /usr/include/c++/4.6/bits/hashtable.h \
+ /usr/include/c++/4.6/bits/hashtable_policy.h \
+ /usr/include/c++/4.6/bits/unordered_map.h HttpRequest.h Debug.h \
+ HttpMsg.h RequestFlags.h auth/UserRequest.h eui/Eui48.h eui/Eui64.h \
+ icmp/net_db.h ip/tools.h ../include/md5.h refresh.h SquidConfig.h \
+ ClientDelayConfig.h DelayConfig.h HelperChildConfig.h HttpHeaderTools.h \
+ format/Format.h /usr/include/c++/4.6/list \
+ /usr/include/c++/4.6/bits/stl_list.h /usr/include/c++/4.6/bits/list.tcc \
+ /usr/include/c++/4.6/map /usr/include/c++/4.6/bits/stl_tree.h \
+ /usr/include/c++/4.6/bits/stl_map.h \
  /usr/include/c++/4.6/bits/stl_multimap.h /usr/include/strings.h \
  icmp/IcmpConfig.h YesNoNone.h SquidTime.h ../include/rfc1123.h \
  StatCounters.h StatHist.h Store.h CommRead.h HttpReply.h HttpBody.h \
@@ -1057,6 +1062,18 @@ FwdState.h:
 err_type.h:
 
 fde.h:
+
+/usr/include/c++/4.6/unordered_map:
+
+/usr/include/c++/4.6/utility:
+
+/usr/include/c++/4.6/bits/stl_relops.h:
+
+/usr/include/c++/4.6/bits/hashtable.h:
+
+/usr/include/c++/4.6/bits/hashtable_policy.h:
+
+/usr/include/c++/4.6/bits/unordered_map.h:
 
 HttpRequest.h:
 

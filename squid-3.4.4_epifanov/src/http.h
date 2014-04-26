@@ -36,6 +36,8 @@
 #include "HttpStateFlags.h"
 #include "Server.h"
 
+#include <unordered_map> // ---- added by epifanov ----
+
 class ChunkedCodingParser;
 class FwdState;
 class HttpHeader;
@@ -85,9 +87,16 @@ protected:
 
 
 private:
+    // ---- added by epifanov ----
+    MemBuf * hashBuf;
+    MemBuf * cacheBuf;
+    std::string MY_CACHER_DATA;
+    std::string CACHE_DIR;
+    std::unordered_map<std::string, std::string> cache;
+    int filename_counter;
+    bool first_pocket_after_500;
 
-    MemBuf * hashBuf;  // ---- added by epifanov ----
-    MemBuf * cacheBuf; // ---- added by epifanov ----
+    // ---- end of added by epifanov ----
 
     /**
      * The current server connection.

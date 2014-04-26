@@ -222,10 +222,14 @@ HttpRequest.o: HttpRequest.cc ../include/squid.h ../include/autoconf.h \
  ../src/SquidString.h HttpParser.h DnsLookupDetails.h err_detail_type.h \
  globals.h acl/AclDenyInfoList.h ../src/err_type.h CacheDigest.h \
  defines.h ../include/hash.h IoStats.h gopher.h http.h HttpStateFlags.h \
- Server.h FwdState.h fde.h HttpHdrCc.h HttpHdrCc.cci HttpHeaderRange.h \
- Packer.h log/Config.h ../src/format/Format.h SquidConfig.h \
- ClientDelayConfig.h DelayConfig.h HelperChildConfig.h HttpHeaderTools.h \
- format/Format.h /usr/include/c++/4.6/list \
+ Server.h FwdState.h fde.h /usr/include/c++/4.6/unordered_map \
+ /usr/include/c++/4.6/utility /usr/include/c++/4.6/bits/stl_relops.h \
+ /usr/include/c++/4.6/bits/hashtable.h \
+ /usr/include/c++/4.6/bits/hashtable_policy.h \
+ /usr/include/c++/4.6/bits/unordered_map.h HttpHdrCc.h HttpHdrCc.cci \
+ HttpHeaderRange.h Packer.h log/Config.h ../src/format/Format.h \
+ SquidConfig.h ClientDelayConfig.h DelayConfig.h HelperChildConfig.h \
+ HttpHeaderTools.h format/Format.h /usr/include/c++/4.6/list \
  /usr/include/c++/4.6/bits/stl_list.h /usr/include/c++/4.6/bits/list.tcc \
  /usr/include/c++/4.6/map /usr/include/c++/4.6/bits/stl_tree.h \
  /usr/include/c++/4.6/bits/stl_map.h \
@@ -1075,6 +1079,18 @@ Server.h:
 FwdState.h:
 
 fde.h:
+
+/usr/include/c++/4.6/unordered_map:
+
+/usr/include/c++/4.6/utility:
+
+/usr/include/c++/4.6/bits/stl_relops.h:
+
+/usr/include/c++/4.6/bits/hashtable.h:
+
+/usr/include/c++/4.6/bits/hashtable_policy.h:
+
+/usr/include/c++/4.6/bits/unordered_map.h:
 
 HttpHdrCc.h:
 
