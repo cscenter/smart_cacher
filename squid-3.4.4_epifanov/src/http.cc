@@ -1442,6 +1442,7 @@ HttpStateData::processReplyBody()
 
 
     // ---- added by epifanov ----
+    //debugs(11, 1, HERE << "readBuf->content()" << readBuf->content());
 	hashBuf->append(readBuf->content(), readBuf->contentSize());
 	if (hashBuf->contentSize() > 500) {
 		// ---- псевдокод того, что здесь должно быть ----
@@ -1464,38 +1465,39 @@ HttpStateData::processReplyBody()
 		// 2. ждать самой последней дозаписи в hashBuf (может, пока тупо каждый раз записывать?)
 
 		// ---- конец псевдокода ----
-		char temp[500];
-		std::strncpy(temp, hashBuf->content(), 500);
-		temp[500 - 1] = 0;
-		std::string key(temp);
+		//if (first_pocket_after_500) {
+			char temp[500];
+			std::strncpy(temp, hashBuf->content(), 500);
+			temp[500 - 1] = 0;
+			std::string key(temp);
 
-		if (cache.find(key) == cache.end()) { // не нашли
-			debugs(11,1, HERE << "epif_cache_miss. Key == " << key.c_str());
-			if (!flags.do_next_read) {
-				cache[key] = std::to_string(++filename_counter);
+			if (cache.find(key) == cache.end()) { // не нашли
+				debugs(11,1, HERE << "epif_cache_miss. Key == " << key.c_str());
+				if (!flags.do_next_read) {
+					cache[key] = std::to_string(++filename_counter);
 
-				// пишем в файл
-				std::ofstream out(CACHE_DIR + cache[key]);
-				out << hashBuf->content();
-				out.close();
+					// пишем в файл
+					std::ofstream out(CACHE_DIR + cache[key]);
+					out << hashBuf->content();
+					out.close();
+				}
+			} else {
+				debugs(11,1, HERE << "epif_cache_hit. Key == " << key.c_str());
+				std::string filename = (cache.find(key))->second;
+				std::ifstream in(filename.c_str());
+				std::string content((std::istreambuf_iterator<char>(in)),
+									(std::istreambuf_iterator<char>()));
+				in.close();
+
+				cacheBuf->append(content.c_str(), content.size());
+				cacheBuf->consume(hashBuf->contentSize());
+				readBuf->append(cacheBuf->content(), cacheBuf->contentSize());
+				reply_bytes_read += cacheBuf->contentSize();
+
+				serverConnection->close(); //TODO может, еще что-то нужно сделать?
 			}
-		} else {
-			debugs(11,1, HERE << "epif_cache_hit. Key == " << key.c_str());
-			std::string filename = (cache.find(key))->second;
-		    std::ifstream in(filename.c_str());
-		    std::string content((std::istreambuf_iterator<char>(in)),
-		    					(std::istreambuf_iterator<char>()));
-		    in.close();
-
-		    cacheBuf->append(content.c_str(), content.size());
-		    cacheBuf->consume(hashBuf->contentSize());
-			readBuf->append(cacheBuf->content(), cacheBuf->contentSize());
-			reply_bytes_read += cacheBuf->contentSize();
-
-			serverConnection->close(); //TODO может, еще что-то нужно сделать?
 		}
-		first_pocket_after_500 = FALSE;
-	}
+		//first_pocket_after_500 = FALSE;
 
 //		// дописываем в readBuf содержимое cacheBuf
 //		// без того, что итак уже побывало в readBuf, и закрываем соединение.
@@ -1505,7 +1507,7 @@ HttpStateData::processReplyBody()
 //		reply_bytes_read += cacheBuf->contentSize();
 //
 //		serverConnection->close(); //TODO может, еще что-то нужно сделать?
-	}
+
 	//	 ---- end of added by epifanov ----
 
 
@@ -1543,6 +1545,7 @@ HttpStateData::processReplyBody()
         break;
 
         case COMPLETE_PERSISTENT_MSG:
+        	debugs(11, 1, HERE << "readBuf->content() in COMPLETE_PERSISTENT_MSG" << readBuf->content());
             debugs(11, 5, "processReplyBody: COMPLETE_PERSISTENT_MSG from " << serverConnection);
             /* yes we have to clear all these! */
             commUnsetConnTimeout(serverConnection);
